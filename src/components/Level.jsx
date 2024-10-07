@@ -1,18 +1,23 @@
 import React from 'react';
-import Box from './Box';
 
 const Level = ({ title, boxes }) => {
   return (
-    <div className="p-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">{title}</h2>
-      <div className="flex justify-center flex-wrap gap-10">
+    <div className="w-full max-w-screen-lg mx-auto p-4">
+      {title && <h2 className="text-2xl md:text-4xl font-bold text-gray-700 mb-8">{title}</h2>}
+      <div
+        className={`level-container ${
+          boxes.length === 1 ? 'justify-center' : 'justify-start'
+        }`}
+      >
         {boxes.map((box, index) => (
-          <Box
+          <div
             key={index}
-            title={box.name}
+            className="level-box"
+            style={{ backgroundColor: box.bgColor }}
             onClick={box.onClick}
-            bgColor={box.bgColor}
-          />
+          >
+            <h3 className="text-xl font-semibold text-white">{box.name}</h3>
+          </div>
         ))}
       </div>
     </div>
