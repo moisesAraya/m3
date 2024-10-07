@@ -1,7 +1,4 @@
-// src/App.js
-
 import React, { useState, useEffect } from 'react';
-import Level from './components/Level';
 import processData from './data/processData';
 import Navbar from './components/Navbar';
 
@@ -9,24 +6,24 @@ function App() {
   const [currentLevel, setCurrentLevel] = useState('nivel0');
   const [history, setHistory] = useState([]);
   const [levelData, setLevelData] = useState([]);
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState('Procesos Principales');
 
   const getGroupColor = (group) => {
     switch (group) {
       case 'estrategico':
-        return '#c0392b';
+        return 'bg-red-100 text-red-800';
       case 'operacional':
-        return '#2980b9';
+        return 'bg-blue-100 text-blue-800';
       case 'soporte':
-        return '#27ae60';
+        return 'bg-green-100 text-green-800';
       default:
-        return '#3498db'; // Azul por defecto
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
   const loadLevel0 = () => {
     setCurrentLevel('nivel0');
-    setTitle('');
+    setTitle('Procesos Principales');
     setLevelData([
       {
         name: 'Procesos Estratégicos',
@@ -80,7 +77,6 @@ function App() {
       .subProcesses.find((sp) => sp.id === subProcessId);
     setTitle(subProcess.name);
     if (!subProcess.subProcesses) {
-      // Si no hay más subprocesos, mostrar el nivel 4
       loadLevel4(group, processId, subProcessId);
       return;
     }
@@ -116,117 +112,67 @@ function App() {
 
   const handleSearch = (term) => {
     term = term.toLowerCase();
-    let found = false;
-
+    const suggestions = [];
+  
     for (const groupKey in processData) {
       const group = processData[groupKey];
-
+  
       for (const process of group.processes) {
         if (process.name.toLowerCase().includes(term)) {
-          // Navega al proceso
-          loadLevel1(groupKey);
-          setTimeout(() => loadLevel2(groupKey, process.id), 0);
-          found = true;
-          return;
+          suggestions.push({
+            name: process.name,
+            group: groupKey, // Agregamos el grupo aquí
+            onClick: () => {
+              loadLevel1(groupKey);
+              setTimeout(() => loadLevel2(groupKey, process.id), 0);
+            },
+          });
         }
-
+  
         for (const subProcess of process.subProcesses) {
           if (subProcess.name.toLowerCase().includes(term)) {
-            // Navega al subproceso
-            loadLevel1(groupKey);
-            setTimeout(() => {
-              loadLevel2(groupKey, process.id);
-              setTimeout(() => loadLevel3(groupKey, process.id, subProcess.id), 0);
-            }, 0);
-            found = true;
-            return;
-          }
-
-          if (subProcess.subProcesses) {
-            for (const subSubProcess of subProcess.subProcesses) {
-              if (subSubProcess.name.toLowerCase().includes(term)) {
-                // Navega al sub-subproceso
+            suggestions.push({
+              name: subProcess.name,
+              group: groupKey, // Agregamos el grupo aquí
+              onClick: () => {
                 loadLevel1(groupKey);
                 setTimeout(() => {
                   loadLevel2(groupKey, process.id);
-                  setTimeout(() => {
-                    loadLevel3(groupKey, process.id, subProcess.id);
-                    setTimeout(
-                      () =>
-                        loadLevel4(
-                          groupKey,
-                          process.id,
-                          subProcess.id,
-                          subSubProcess.id
-                        ),
-                      0
-                    );
-                  }, 0);
+                  setTimeout(() => loadLevel3(groupKey, process.id, subProcess.id), 0);
                 }, 0);
-                found = true;
-                return;
+              },
+            });
+          }
+  
+          if (subProcess.subProcesses) {
+            for (const subSubProcess of subProcess.subProcesses) {
+              if (subSubProcess.name.toLowerCase().includes(term)) {
+                suggestions.push({
+                  name: subSubProcess.name,
+                  group: groupKey, // Agregamos el grupo aquí
+                  onClick: () => {
+                    loadLevel1(groupKey);
+                    setTimeout(() => {
+                      loadLevel2(groupKey, process.id);
+                      setTimeout(() => {
+                        loadLevel3(groupKey, process.id, subProcess.id);
+                        setTimeout(() => {
+                          loadLevel4(groupKey, process.id, subProcess.id, subSubProcess.id);
+                        }, 0);
+                      }, 0);
+                    }, 0);
+                  },
+                });
               }
             }
           }
         }
       }
     }
-
-    if (!found) {
-      alert('Proceso no encontrado');
-    }
+  
+    return suggestions;
   };
-
-  // En App.js
-
-const handleNavigation = (processName, subProcessName, subSubProcessName) => {
-  let found = false;
-
-  for (const groupKey in processData) {
-    const group = processData[groupKey];
-
-    for (const process of group.processes) {
-      if (process.name === processName) {
-        loadLevel1(groupKey);
-        setTimeout(() => loadLevel2(groupKey, process.id), 0);
-        found = true;
-
-        if (subProcessName) {
-          const subProcess = process.subProcesses.find(
-            (sp) => sp.name === subProcessName
-          );
-          if (subProcess) {
-            setTimeout(() => loadLevel3(groupKey, process.id, subProcess.id), 0);
-
-            if (subSubProcessName) {
-              const subSubProcess = subProcess.subProcesses.find(
-                (ssp) => ssp.name === subSubProcessName
-              );
-              if (subSubProcess) {
-                setTimeout(
-                  () =>
-                    loadLevel4(
-                      groupKey,
-                      process.id,
-                      subProcess.id,
-                      subSubProcess.id
-                    ),
-                  0
-                );
-              }
-            }
-          }
-        }
-
-        return;
-      }
-    }
-  }
-
-  if (!found) {
-    alert('Proceso no encontrado');
-  }
-};
+  
 
   const goBack = () => {
     if (history.length > 0) {
@@ -247,44 +193,38 @@ const handleNavigation = (processName, subProcessName, subSubProcessName) => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      {/* Navbar */}
-      <Navbar
-        onSearch={handleSearch}
-        currentLevel={currentLevel}
-        onNavigate={handleNavigation}
-      />
-
-      {/* Main Content */}
-      <main className="flex-grow w-full flex flex-col items-center mt-20">
-        <Level title={title} boxes={levelData} />
+      <Navbar onSearch={handleSearch} currentLevel={currentLevel} />
+      <main className="flex-grow w-full flex flex-col items-center pt-24 px-4">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8">{title}</h1>
+        <div className="grid gap-6 w-full max-w-screen-xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center">
+          {levelData.map((item, index) => (
+            <div
+              key={index}
+              className={`p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 cursor-pointer ${item.bgColor}`}
+              onClick={item.onClick}
+            >
+              <h2 className="text-xl font-semibold mb-2">{item.name}</h2>
+              <p className="text-gray-700">Haz clic para explorar más.</p>
+            </div>
+          ))}
+        </div>
       </main>
-
-      {/* Navigation Icons */}
       {currentLevel !== 'nivel0' && (
         <div className="fixed bottom-5 right-5 z-50 flex space-x-4">
           <button
             onClick={goBack}
             className="bg-white text-gray-800 p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
           >
-            {/* Puedes reemplazar con un icono de FontAwesome */}
             <span className="text-2xl">←</span>
           </button>
           <button
             onClick={goHome}
             className="bg-white text-gray-800 p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
           >
-            {/* Puedes reemplazar con un icono de FontAwesome */}
             <span className="text-2xl">🏠</span>
           </button>
         </div>
       )}
-
-      {/* Footer */}
-      <footer className="w-full bg-white shadow-inner">
-        <div className="max-w-screen-lg mx-auto py-4 text-center text-gray-600 text-sm">
-          © {new Date().getFullYear()} SERVIU Región del Biobío. Todos los derechos reservados.
-        </div>
-      </footer>
     </div>
   );
 }
