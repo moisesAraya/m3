@@ -76,14 +76,9 @@ function App() {
       .find((p) => p.id === processId)
       .subProcesses.find((sp) => sp.id === subProcessId);
     setTitle(subProcess.name);
-    if (!subProcess.subProcesses) {
-      loadLevel4(group, processId, subProcessId);
-      return;
-    }
     const boxes = subProcess.subProcesses.map((subSubProcess) => ({
       name: subSubProcess.name,
-      onClick: () =>
-        loadLevel4(group, processId, subProcessId, subSubProcess.id),
+      onClick: () => loadLevel4(group, processId, subProcessId, subSubProcess.id),
       bgColor: getGroupColor(group),
     }));
     setLevelData(boxes);
@@ -96,44 +91,39 @@ function App() {
       .find((p) => p.id === processId)
       .subProcesses.find((sp) => sp.id === subProcessId)
       .subProcesses.find((ssp) => ssp.id === subSubProcessId);
-    if (!subSubProcess) {
-      console.error(`Subproceso no encontrado: ${subSubProcessId}`);
-      return;
-    }
+    
     setTitle(subSubProcess.name);
-    setLevelData([
-      {
-        name: 'Ver Documento',
-        onClick: () => window.open(subSubProcess.link, '_blank'),
-        bgColor: getGroupColor(group),
-      },
-    ]);
+    setLevelData([{
+      name: 'Ver Documento',
+      onClick: () => window.open(subSubProcess.link, '_blank'),
+      bgColor: getGroupColor(group),
+    }]);
   };
 
   const handleSearch = (term) => {
     term = term.toLowerCase();
     const suggestions = [];
-  
+
     for (const groupKey in processData) {
       const group = processData[groupKey];
-  
+
       for (const process of group.processes) {
         if (process.name.toLowerCase().includes(term)) {
           suggestions.push({
             name: process.name,
-            group: groupKey, // Agregamos el grupo aquí
+            group: groupKey,
             onClick: () => {
               loadLevel1(groupKey);
               setTimeout(() => loadLevel2(groupKey, process.id), 0);
             },
           });
         }
-  
+
         for (const subProcess of process.subProcesses) {
           if (subProcess.name.toLowerCase().includes(term)) {
             suggestions.push({
               name: subProcess.name,
-              group: groupKey, // Agregamos el grupo aquí
+              group: groupKey,
               onClick: () => {
                 loadLevel1(groupKey);
                 setTimeout(() => {
@@ -143,36 +133,12 @@ function App() {
               },
             });
           }
-  
-          if (subProcess.subProcesses) {
-            for (const subSubProcess of subProcess.subProcesses) {
-              if (subSubProcess.name.toLowerCase().includes(term)) {
-                suggestions.push({
-                  name: subSubProcess.name,
-                  group: groupKey, // Agregamos el grupo aquí
-                  onClick: () => {
-                    loadLevel1(groupKey);
-                    setTimeout(() => {
-                      loadLevel2(groupKey, process.id);
-                      setTimeout(() => {
-                        loadLevel3(groupKey, process.id, subProcess.id);
-                        setTimeout(() => {
-                          loadLevel4(groupKey, process.id, subProcess.id, subSubProcess.id);
-                        }, 0);
-                      }, 0);
-                    }, 0);
-                  },
-                });
-              }
-            }
-          }
         }
       }
     }
-  
+
     return suggestions;
   };
-  
 
   const goBack = () => {
     if (history.length > 0) {
@@ -204,7 +170,6 @@ function App() {
               onClick={item.onClick}
             >
               <h2 className="text-xl font-semibold mb-2">{item.name}</h2>
-              <p className="text-gray-700">Haz clic para explorar más.</p>
             </div>
           ))}
         </div>

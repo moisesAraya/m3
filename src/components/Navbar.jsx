@@ -11,7 +11,7 @@ function Navbar({ onSearch }) {
 
     if (term) {
       const results = onSearch(term);
-      setSuggestions(results);
+      setSuggestions(results); // Mostrar todas las sugerencias
     } else {
       setSuggestions([]); // Limpiar las sugerencias si el campo de búsqueda está vacío
     }
@@ -38,14 +38,18 @@ function Navbar({ onSearch }) {
 
   return (
     <header className="bg-blue-600 text-white py-4 shadow-md">
-      <div className="container mx-auto flex justify-between items-center px-4">
+      <div className="container mx-auto flex justify-between items-center px-6">
         <a href="https://serviubiobio.cl" target="_blank" rel="noopener noreferrer" className="flex items-center">
-          <img src={serviuLogo} alt="SERVIU" className="h-32" />
+          <img 
+            src={serviuLogo} 
+            alt="SERVIU" 
+            className="h-32" // Mantener el tamaño original del logo
+          />
         </a>
         
-        <h1 className="text-white text-3xl font-bold ml-2">Mapa de Procesos SERVIU</h1>
+        <h1 className="text-white text-3xl font-bold mx-4">Mapa de Procesos SERVIU</h1> {/* Ajuste de margen */}
         
-        <div className="relative w-1/3 ml-56">
+        <div className="relative w-1/3 ml-4"> {/* Ajuste de margen */}
           <input
             type="text"
             value={searchTerm}
@@ -55,7 +59,7 @@ function Navbar({ onSearch }) {
           />
           
           {suggestions.length > 0 && (
-            <ul className="absolute left-0 mt-2 w-full bg-white shadow-md rounded-md z-10 text-black">
+            <ul className="absolute left-0 mt-2 w-full bg-white shadow-md rounded-md z-10 text-black max-h-60 overflow-auto">
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
