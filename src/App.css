@@ -1,0 +1,65 @@
+/* App.css */
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #F8FAFC; /* Color de fondo */
+  color: #333333; /* Color de texto */
+  margin: 0; /* Asegúrate de que no haya márgenes por defecto */
+}
+
+/* Estilos para la navbar */
+header {
+  background-color: #003D73; /* Azul oscuro */
+  color: white;
+}
+
+/* Estilos para la barra de búsqueda */
+input {
+  border-radius: 5px; /* Bordes redondeados */
+  border: 1px solid #ccc; /* Color del borde */
+}
+
+/* Estilos para los boxes */
+.box {
+  background-color: white; /* Fondo blanco para los boxes */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.box:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más fuerte al pasar el ratón */
+}
+
+/* Estilos para botones */
+button {
+  background-color: #007BFF; /* Azul */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3; /* Azul oscuro */
+}
+
+.suggestion-box {
+  max-height: 200px; /* Limitar la altura a aproximadamente 5 elementos */
+  overflow-y: auto;  /* Activar el scroll */
+  background-color: white; /* Asegura que el fondo sea visible */
+  border: 1px solid #ddd; /* Bordes opcionales */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  z-index: 1000; /* Asegura que aparezca encima de otros elementos */
+}
+
+/* Opcionalmente puedes agregar más estilo a cada sugerencia */
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+

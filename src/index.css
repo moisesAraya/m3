@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-100 text-gray-800;
+}
+
+h1 {
+  @apply text-gray-900 font-extrabold;
+}
+
+button {
+  @apply transition duration-300 ease-in-out transform hover:scale-105;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #F8FAFC; /* Color de fondo */
+  color: #333333; /* Color de texto */
+}
