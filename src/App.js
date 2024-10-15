@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import processData from './data/processData';
 import Navbar from './components/Navbar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faHome } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [currentLevel, setCurrentLevel] = useState('nivel0');
   const [history, setHistory] = useState([]);
   const [levelData, setLevelData] = useState([]);
   const [title, setTitle] = useState('Procesos Principales');
+  const currentYear = new Date().getFullYear(); // Obtener el año actual
 
   const getGroupColor = (group) => {
     switch (group) {
@@ -98,7 +101,7 @@ function App() {
       name: subSubProcess.name,
       onClick: () => loadLevel4(group, processId, subProcessId, subSubProcess.id),
       bgColor: getGroupColor(group),
-      subProcesses: subSubProcess.subProcesses || [], // Añadir subprocesos si existen
+      subProcesses: subSubProcess.subProcesses || [],
     }));
     setLevelData(boxes);
   };
@@ -128,10 +131,10 @@ function App() {
   const handleSearch = (term) => {
     term = term.toLowerCase();
     const suggestions = [];
-  
+
     for (const groupKey in processData) {
       const group = processData[groupKey];
-  
+
       for (const process of group.processes) {
         if (process.name.toLowerCase().includes(term)) {
           suggestions.push({
@@ -143,7 +146,7 @@ function App() {
             },
           });
         }
-  
+
         for (const subProcess of process.subProcesses) {
           if (subProcess.name.toLowerCase().includes(term)) {
             suggestions.push({
@@ -158,7 +161,7 @@ function App() {
               },
             });
           }
-  
+
           if (subProcess.subProcesses) {
             for (const subSubProcess of subProcess.subProcesses) {
               if (subSubProcess.name.toLowerCase().includes(term)) {
@@ -185,7 +188,7 @@ function App() {
       }
     }
 
-    return suggestions;
+    return suggestions.slice(0, 5);
   };
 
   const goBack = () => {
@@ -207,33 +210,34 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
+      {/* Navbar */}
       <Navbar onSearch={handleSearch} currentLevel={currentLevel} />
+
+      {/* Contenido principal */}
       <main className="flex-grow w-full flex flex-col items-center pt-24 px-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8">{title}</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8 animate-fade-in">{title}</h1>
 
-        {/* Ajuste de grid */}
+        {/* Grid para mostrar los niveles */}
         <div
-  className={`grid gap-6 w-full max-w-screen-xl ${
-    levelData.length === 1
-      ? 'grid-cols-1 place-items-center'
-      : levelData.length === 2
-      ? 'grid-cols-2 justify-center'
-      : levelData.length === 3
-      ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center'
-      : levelData.length === 5
-      ? 'grid-cols-2 md:grid-cols-3 justify-center'
-      : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-  } justify-center`}
->
-
+          className={`grid gap-6 w-full max-w-screen-xl ${
+            levelData.length === 1
+              ? 'grid-cols-1 place-items-center'
+              : levelData.length === 2
+              ? 'grid-cols-2 justify-center'
+              : levelData.length === 3
+              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center'
+              : levelData.length === 5
+              ? 'grid-cols-2 md:grid-cols-3 justify-center'
+              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+          } justify-center`}
+        >
           {levelData.map((item, index) => (
             <div
               key={index}
-              className={`p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 cursor-pointer ${item.bgColor}`}
+              className={`p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 cursor-pointer fade-in ${item.bgColor}`}
               onClick={item.onClick}
             >
               <h2 className="text-xl font-semibold mb-2">{item.name}</h2>
-              {/* Mostrar subprocesos en listas ordenadas si existen */}
               {item.subProcesses && item.subProcesses.length > 0 ? (
                 <ul className="text-gray-700 list-disc ml-5">
                   {item.subProcesses.map((subProcess, subIndex) => (
@@ -249,19 +253,30 @@ function App() {
           ))}
         </div>
       </main>
+
+      {/* Footer con año dinámico */}
+      <footer className="bg-white-600 text-gray py-4 mt-auto fade-in">
+        <div className="container mx-auto text-center">
+          <p className="text-sm">
+            © {currentYear} SERVIU Región del Biobío. Todos los derechos reservados.
+          </p>
+        </div>
+      </footer>
+
+      {/* Botones de navegación con FontAwesome */}
       {currentLevel !== 'nivel0' && (
-        <div className="fixed bottom-5 right-5 z-50 flex space-x-4">
+        <div className="fixed bottom-20 right-5 z-50 flex space-x-4 button-bounce"> {/* Subimos los botones para evitar superposición */}
           <button
             onClick={goBack}
-            className="bg-white text-gray-800 p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+            className="bg-white text-gray-800 p-2 rounded-full shadow-lg hover:bg-gray-100 transition-colors button-hover"
           >
-            <span className="text-2xl">←</span>
+            <FontAwesomeIcon icon={faArrowLeft} size="lg" /> {/* Hacemos los íconos más pequeños */}
           </button>
           <button
             onClick={goHome}
-            className="bg-white text-gray-800 p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+            className="bg-white text-gray-800 p-2 rounded-full shadow-lg hover:bg-gray-100 transition-colors button-hover"
           >
-            <span className="text-2xl">🏠</span>
+            <FontAwesomeIcon icon={faHome} size="lg" /> {/* Hacemos los íconos más pequeños */}
           </button>
         </div>
       )}
