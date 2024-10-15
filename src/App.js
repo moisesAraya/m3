@@ -213,18 +213,19 @@ function App() {
 
         {/* Ajuste de grid */}
         <div
-          className={`grid gap-6 w-full max-w-screen-xl ${
-            levelData.length === 1
-              ? 'grid-cols-1 place-items-center'
-              : levelData.length === 2
-              ? 'grid-cols-2 justify-center'
-              : levelData.length === 3
-              ? 'grid-cols-3 justify-center'
-              : levelData.length === 5
-              ? 'grid-cols-2 md:grid-cols-3 justify-center'
-              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-          } justify-center`}
-        >
+  className={`grid gap-6 w-full max-w-screen-xl ${
+    levelData.length === 1
+      ? 'grid-cols-1 place-items-center'
+      : levelData.length === 2
+      ? 'grid-cols-2 justify-center'
+      : levelData.length === 3
+      ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center'
+      : levelData.length === 5
+      ? 'grid-cols-2 md:grid-cols-3 justify-center'
+      : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+  } justify-center`}
+>
+
           {levelData.map((item, index) => (
             <div
               key={index}

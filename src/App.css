@@ -1,0 +1,130 @@
+/* App.css */
+
+/* Configuración general */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #F8FAFC; /* Color de fondo */
+  color: #333333; /* Color de texto */
+  margin: 0; /* Asegúrate de que no haya márgenes por defecto */
+}
+
+/* Estilos para la navbar */
+header {
+  background-color: #003D73; /* Azul oscuro */
+  color: white;
+  padding: 1rem 0;
+}
+
+/* Ajuste responsivo del contenedor del header */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Permite que los elementos se alineen verticalmente en pantallas pequeñas */
+  text-align: center;
+}
+
+/* Asegura que el logo no se aplaste en pantallas pequeñas */
+img {
+  height: auto;
+  width: 80px; /* Ajusta el tamaño del logo */
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  img {
+    width: 120px; /* Ajusta el tamaño del logo en pantallas más grandes */
+  }
+}
+
+/* Barra de búsqueda */
+.search-bar {
+  width: 100%; /* Asegura que la barra ocupe todo el ancho en pantallas pequeñas */
+  margin-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  .search-bar {
+    width: 30%; /* Reduce el ancho de la barra de búsqueda en pantallas medianas y grandes */
+    margin-left: auto;
+    margin-top: 0;
+  }
+}
+
+/* Input de búsqueda */
+input {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%; /* Asegura que el input ocupe todo el ancho disponible */
+  padding: 0.5rem;
+}
+
+/* Estilos para los boxes */
+.box {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+.box:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Diseño de grid para cajas */
+
+/* Una columna en pantallas pequeñas */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Para pantallas grandes, muestra 3 columnas */
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas en pantallas grandes */
+  }
+}
+
+/* Para pantallas medianas, muestra 2 columnas */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas medianas */
+  }
+}
+
+/* Para pantallas pequeñas, muestra 1 columna */
+@media (max-width: 639px) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr); /* 1 columna en pantallas pequeñas */
+  }
+}
+
+
+/* Estilos para botones */
+button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Ajustes para el título */
+h1 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+}
