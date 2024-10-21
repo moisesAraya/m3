@@ -39,7 +39,7 @@ function Navbar({ onSearch }) {
   return (
     <header className="bg-blue-600 text-white py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-4">
-        <a href="https://serviubiobio.cl" target="_blank" rel="noopener noreferrer" className="flex items-center">
+        <a href="https://www.serviubiobio.cl" target="_blank" rel="noopener noreferrer" className="flex items-center">
           <img src={serviuLogo} alt="SERVIU" className="h-32" />
         </a>
         
