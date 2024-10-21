@@ -188,7 +188,7 @@ function App() {
       }
     }
 
-    return suggestions.slice(0, 5);
+    return suggestions
   };
 
   const goBack = () => {

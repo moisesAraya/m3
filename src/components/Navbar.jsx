@@ -42,7 +42,7 @@ function Navbar({ onSearch }) {
     <header className="bg-blue-600 text-white py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-4">
         {/* Logo */}
-        <a href="https://serviubiobio.cl" target="_blank" rel="noopener noreferrer" className="flex items-center">
+        <a href="https://www.serviubiobio.cl" target="_blank" rel="noopener noreferrer" className="flex items-center">
           <img src={serviuLogo} alt="SERVIU" className="h-20 mr-4" />
         </a>
 
@@ -53,29 +53,30 @@ function Navbar({ onSearch }) {
 
         {/* Barra de búsqueda */}
         <div className="relative w-1/4 ml-auto animate-fade-in">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleInputChange}
-            className="bg-gray-200 text-gray-800 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-            placeholder="Buscar procesos..."
-          />
-          <FontAwesomeIcon icon={faSearch} className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500" />
+  <input
+    type="text"
+    value={searchTerm}
+    onChange={handleInputChange}
+    className="bg-gray-200 text-gray-800 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+    placeholder="Buscar procesos..."
+  />
+  <FontAwesomeIcon icon={faSearch} className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500" />
 
-          {suggestions.length > 0 && (
-            <ul className="absolute left-0 mt-2 w-full bg-white shadow-md rounded-md z-10 text-black max-h-60 overflow-auto animate-fade-in">
-              {suggestions.map((suggestion, index) => (
-                <li
-                  key={index}
-                  className={`px-4 py-2 hover:bg-gray-200 cursor-pointer ${getSuggestionColor(suggestion.group)}`}
-                  onClick={() => handleSuggestionClick(suggestion)}
-                >
-                  {suggestion.name}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+  {suggestions.length > 0 && (
+    <ul className="absolute left-0 mt-2 w-full bg-white shadow-md rounded-md z-50 text-black max-h-80 overflow-auto animate-fade-in">
+      {suggestions.map((suggestion, index) => (
+        <li
+          key={index}
+          className={`px-4 py-2 hover:bg-gray-200 cursor-pointer ${getSuggestionColor(suggestion.group)}`}
+          onClick={() => handleSuggestionClick(suggestion)}
+        >
+          {suggestion.name}
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
+
       </div>
     </header>
   );
